@@ -126,13 +126,13 @@ var menu = [
 ];
 
 const data = reactive({
-  name:'Jesus',
-  gender:'Male',
-  height:'179',
-  weight:'80',
-  age:'28',
-  levelN:'Barely',
-  targetN:'Lose weight',
+  name:'',
+  gender:'',
+  height:'',
+  weight:'',
+  age:'',
+  levelN:'',
+  targetN:'',
   icals:0,
   icarbs:0,
   ifats:0,

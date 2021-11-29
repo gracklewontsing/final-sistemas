@@ -5,6 +5,7 @@ import Calc from './components/Calc.vue'
 </script>
 
 <template>  
+  <h3 class="display-3 mb-5" style="margin-bottom:10%;"> Welcome to your new diet calculator!</h3>
   <Calc />
 </template>
 
@@ -15,7 +16,9 @@ import Calc from './components/Calc.vue'
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
-  margin: 30%;
+  margin-top:10%;
+  margin-left: 25%;
+  margin-right: 25%;
+  margin-bottom: 10%;
 }
 </style>
