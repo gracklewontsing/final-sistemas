@@ -7,6 +7,7 @@ new_generation = new Array(POPULATION_SIZE)
 child = new Array(POPULATION_TYPE)
 parent_a = new Array(POPULATION_TYPE)
 parent_b = new Array(POPULATION_TYPE)
+aptitude = new Array(POPULATION_SIZE);
 for(let i=0; i<POPULATION_SIZE;i++){
   new_generation[i] = new Array(25)
 }
@@ -144,11 +145,16 @@ const data = reactive({
 let list = []
 
 async function calculate(){  
-  data.showModal = true  
-  await new Promise(r => setTimeout(r, 2000));
-  data.user= new Human(data.name,data.gender,data.height,data.weight,data.age,data.levelN,data.targetN)
-  //console.log(human)
-  genetic(data.user)
+  if(data.name =='' || data.gender == '' || data.height== '' || data.weight== '' || data.age == '' || data.levelN == ''|| data.targetN == ''){
+    alert("All fields are required!")
+  }
+  else{
+    data.showModal = true  
+    await new Promise(r => setTimeout(r, 2000));
+    data.user= new Human(data.name,data.gender,data.height,data.weight,data.age,data.levelN,data.targetN)
+    //console.log(human)
+    genetic(data.user)
+  }
 }
 
 function close(){
@@ -187,8 +193,7 @@ function calcNutrients(user){
   let calorieCount=0;
   let carbCount=0;
   let fatCount=0;
-  let proteinCount=0;    
-  aptitude = new Array(POPULATION_SIZE);
+  let proteinCount=0;      
   for(let i = 0; i<POPULATION_SIZE; i++){
     aptitude[i] = 0;
     for(let j = 0; j < POPULATION_TYPE;j++){    
@@ -255,11 +260,12 @@ function selection_cross_mutate(){
     random_b = Math.floor(Math.random() * POPULATION_SIZE);
   }
   let fitter=999999;
-  let fitter_pos=30;
+  let fitter_pos=20;
   let fittest=999999;
-  let fittest_pos=30;
+  let fittest_pos=20;
   //select 2 fittest
   for(let i = 0; i<POPULATION_SIZE; i++){    
+    //console.log(aptitude[i])
     if(aptitude[i]<fittest){        
       fitter = fittest;
       fitter_pos = fittest_pos;
@@ -270,8 +276,7 @@ function selection_cross_mutate(){
       fitter=aptitude[i];
       fitter_pos=i;              
     }      
-  }      
-
+  }        
   //pass 2 fittest onwards
   for(let j=0; j<POPULATION_TYPE;j++){ 
     new_generation[0][j] = population[fittest_pos][j];
@@ -290,12 +295,13 @@ function selection_cross_mutate(){
     cross();  
 
     //mutate the childs genomes
-    if(((Math.random()*10) +1) <= 2)
+    if((Math.floor(Math.random()*10)) <= 2)
       mutate();           
       
-    //imprlet child leto new generation
-    for(let j=0; j<POPULATION_TYPE;j++) 
+    //imprint child to new generation
+    for(let j=0; j<POPULATION_TYPE;j++) {
       new_generation[k][j] = child[j];
+    }
   }        
 }
 function overwrite(){
@@ -362,6 +368,7 @@ function genetic(user){
       v-model="data.name"
       label="Name"
       placeholder="John Smith"
+      :rules="[value => (value && value.length > 0) || 'Field is required']"
     />
     <va-divider inset />
     <h6 class="display-6 mb-4 text--left">Are you a man or a woman? </h6>
@@ -369,6 +376,7 @@ function genetic(user){
       type="radio"
       :options="['Male', 'Female']"
       v-model="data.gender"
+      :rules="[value => (value && value.length > 0) || 'Field is required']"
     ></va-option-list>
     <va-divider inset />
     <h6 class="display-6 mb-4 text--left">How tall are you?(cm) </h6>
@@ -377,6 +385,7 @@ function genetic(user){
       v-model="data.height"
       label="Height"
       placeholder="0-1000"
+      :rules="[value => (value && value.length > 0) || 'Field is required']"
     ></va-input>
     <va-divider inset />
     <h6 class="display-6 mb-4 text--left">How much do you weigh? (kg) </h6>
@@ -385,6 +394,7 @@ function genetic(user){
       v-model="data.weight"
       label="Weight"
       placeholder="0-1000"
+      :rules="[value => (value && value.length > 0) || 'Field is required']"
     ></va-input>
     <va-divider inset />
     <h6 class="display-6 mb-4 text--left">How old are you?(years) </h6>
@@ -393,6 +403,7 @@ function genetic(user){
       v-model="data.age"
       label="Age"
       placeholder="0-100"
+      :rules="[value => (value && value.length > 0) || 'Field is required']"
     ></va-input>
     <va-divider inset />
     <h6 class="display-6 mb-4 text--left">How much do you exercise?</h6>
@@ -400,6 +411,7 @@ function genetic(user){
       type="radio"
       :options="['Barely', 'Slightly', 'Moderately', 'Highly', 'Very Highly']"
       v-model="data.levelN"
+      :rules="[value => (value && value.length > 0) || 'Field is required']"
     ></va-option-list>
     <va-divider inset />
     <h6 class="display-6 mb-4 text--left">Lastly, what are your objectives for a diet?</h6>
@@ -407,6 +419,7 @@ function genetic(user){
       type="radio"
       :options="['Lose weight', 'Build muscle', 'Eat healthy', 'I have no particular goals right now']"
       v-model="data.targetN"
+      :rules="[value => (value && value.length > 0) || 'Field is required']"
     ></va-option-list>
     <va-divider inset />
     <h6 class="display-6 mb-4 text--left">Once everything is filled, click here to calculate a diet:</h6>
